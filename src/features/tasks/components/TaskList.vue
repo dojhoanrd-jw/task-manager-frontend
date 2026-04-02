@@ -2,28 +2,41 @@
   <div>
     <CreateTaskForm @create="onCreateTask" />
 
-    <LoadingSpinner v-if="tasksStore.loading" />
+    <LoadingSpinner v-if="tasksStore.loading" text="Loading tasks..." />
 
-    <div v-else ref="scrollContainer" class="task-list" @scroll="onScroll">
-      <TaskItem
-        v-for="task in tasksStore.tasks"
-        :key="task.id"
-        :task="task"
-        @toggle="onToggle"
-        @delete="onDelete"
-      />
+    <template v-else>
+      <div v-if="tasksStore.tasks.length > 0" class="task-stats">
+        <span>{{ tasksStore.tasks.length }} tasks</span>
+        <span>{{ completedCount }} completed</span>
+      </div>
 
-      <LoadingSpinner v-if="tasksStore.loadingMore" />
+      <div ref="scrollContainer" class="task-list" @scroll="onScroll">
+        <TaskItem
+          v-for="task in tasksStore.tasks"
+          :key="task.id"
+          :task="task"
+          @toggle="onToggle"
+          @delete="onDelete"
+        />
 
-      <p v-if="tasksStore.tasks.length === 0" class="empty-text">
-        No tasks yet. Create one above.
-      </p>
-    </div>
+        <LoadingSpinner v-if="tasksStore.loadingMore" />
+
+        <div v-if="!tasksStore.hasMore && tasksStore.tasks.length > 0" class="end-message">
+          All tasks loaded
+        </div>
+      </div>
+
+      <div v-if="tasksStore.tasks.length === 0" class="empty-tasks">
+        <div class="empty-icon">&#10003;</div>
+        <p>No tasks yet</p>
+        <span>Create your first task above</span>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useTasksStore } from '../store/tasks.store'
 import { useProjectsStore } from '@/features/projects/store/projects.store'
 import TaskItem from './TaskItem.vue'
@@ -34,7 +47,8 @@ const tasksStore = useTasksStore()
 const projectsStore = useProjectsStore()
 const scrollContainer = ref(null)
 
-// Fetch tasks when project changes
+const completedCount = computed(() => tasksStore.tasks.filter(t => t.completed).length)
+
 watch(
   () => projectsStore.currentProject,
   (project) => {
@@ -47,14 +61,10 @@ watch(
   { immediate: true }
 )
 
-// Virtual scroll: load more when reaching bottom
 const onScroll = () => {
   const el = scrollContainer.value
   if (!el) return
-
-  const threshold = 100
-  const reachedBottom = el.scrollHeight - el.scrollTop - el.clientHeight < threshold
-
+  const reachedBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100
   if (reachedBottom && projectsStore.currentProject) {
     tasksStore.loadMore(projectsStore.currentProject.id)
   }
@@ -77,18 +87,48 @@ const onDelete = (taskId) => {
 </script>
 
 <style scoped>
+.task-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 60vh;
+  max-height: 55vh;
   overflow-y: auto;
   padding-right: 4px;
 }
-.empty-text {
+.end-message {
   text-align: center;
-  color: #9ca3af;
-  padding: 32px;
-  font-size: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 16px;
 }
+.empty-tasks {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-icon {
+  width: 48px; height: 48px;
+  background: var(--bg-input);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 16px;
+}
+.empty-tasks p {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.empty-tasks span { font-size: 13px; }
 </style>

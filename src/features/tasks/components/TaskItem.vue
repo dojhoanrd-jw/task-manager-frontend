@@ -1,27 +1,32 @@
 <template>
-  <div class="task-item" :class="{ completed: task.completed }">
-    <div class="task-check">
-      <input
-        type="checkbox"
-        :checked="task.completed"
-        @change="$emit('toggle', task)"
-      />
-    </div>
-    <div class="task-content">
-      <span class="task-title" :class="{ strikethrough: task.completed }">
-        {{ task.title }}
-      </span>
+  <div class="task-item fade-enter" :class="{ 'task-completed': task.completed }">
+    <button class="task-checkbox" :class="{ checked: task.completed }" @click="$emit('toggle', task)">
+      <svg v-if="task.completed" viewBox="0 0 16 16" fill="none">
+        <path d="M13.5 4.5L6 12L2.5 8.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="task-body">
+      <span class="task-title" :class="{ strikethrough: task.completed }">{{ task.title }}</span>
       <span v-if="task.description" class="task-desc">{{ task.description }}</span>
       <div class="task-meta">
-        <span class="task-id">ID: {{ task.id }}</span>
-        <span class="task-date">{{ task.createdDate }} {{ task.createdTime }}</span>
+        <BaseBadge variant="default">{{ task.id.slice(0, 8) }}</BaseBadge>
+        <span class="meta-date">{{ task.createdDate }}</span>
+        <span class="meta-time">{{ task.createdTime }}</span>
       </div>
     </div>
-    <button @click="$emit('delete', task.id)" class="btn btn-danger btn-sm">Delete</button>
+
+    <button class="task-delete" @click="$emit('delete', task.id)" title="Delete task">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 011.334-1.334h2.666a1.333 1.333 0 011.334 1.334V4m2 0v9.333a1.333 1.333 0 01-1.334 1.334H4.667a1.333 1.333 0 01-1.334-1.334V4h9.334z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
 </template>
 
 <script setup>
+import BaseBadge from '@/shared/components/BaseBadge.vue'
+
 defineProps({ task: { type: Object, required: true } })
 defineEmits(['toggle', 'delete'])
 </script>
@@ -29,48 +34,78 @@ defineEmits(['toggle', 'delete'])
 <style scoped>
 .task-item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
   background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.2s;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
 }
-.task-item.completed {
-  background: #f9fafb;
-  opacity: 0.7;
-}
-.task-check input {
-  width: 18px;
-  height: 18px;
+.task-item:hover { box-shadow: var(--shadow-sm); }
+.task-completed { opacity: 0.6; }
+
+.task-checkbox {
+  width: 22px; height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: white;
   cursor: pointer;
-  accent-color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all var(--transition);
 }
-.task-content {
-  flex: 1;
-  min-width: 0;
+.task-checkbox:hover { border-color: var(--green); }
+.task-checkbox.checked {
+  background: var(--green);
+  border-color: var(--green);
 }
+.task-checkbox svg { width: 12px; height: 12px; }
+
+.task-body { flex: 1; min-width: 0; }
 .task-title {
   display: block;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.4;
 }
 .strikethrough {
   text-decoration: line-through;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 .task-desc {
   display: block;
   font-size: 13px;
-  color: #6b7280;
-  margin-top: 2px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+  line-height: 1.4;
 }
 .task-meta {
   display: flex;
-  gap: 12px;
-  margin-top: 4px;
-  font-size: 11px;
-  color: #9ca3af;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
 }
+.meta-date, .meta-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.task-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  flex-shrink: 0;
+  opacity: 0;
+}
+.task-item:hover .task-delete { opacity: 1; }
+.task-delete:hover { color: var(--red); background: #fef2f2; }
+.task-delete svg { width: 16px; height: 16px; }
 </style>

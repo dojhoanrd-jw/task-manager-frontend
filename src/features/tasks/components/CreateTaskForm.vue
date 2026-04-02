@@ -1,13 +1,21 @@
 <template>
-  <form @submit.prevent="onSubmit" class="create-task-form">
-    <input v-model="title" class="input" placeholder="Task title" required />
-    <input v-model="description" class="input" placeholder="Description (optional)" />
-    <button type="submit" class="btn btn-primary btn-sm" :disabled="!title.trim()">Add</button>
-  </form>
+  <div class="create-task">
+    <form @submit.prevent="onSubmit" class="create-task-form">
+      <BaseInput v-model="title" placeholder="What needs to be done?" required />
+      <div class="form-actions">
+        <input v-model="description" class="desc-input" placeholder="Add a description (optional)" />
+        <BaseButton variant="primary" size="sm" :disabled="!title.trim()" @click="onSubmit">
+          Add Task
+        </BaseButton>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import BaseInput from '@/shared/components/BaseInput.vue'
+import BaseButton from '@/shared/components/BaseButton.vue'
 
 const emit = defineEmits(['create'])
 
@@ -15,6 +23,7 @@ const title = ref('')
 const description = ref('')
 
 const onSubmit = () => {
+  if (!title.value.trim()) return
   emit('create', { title: title.value, description: description.value })
   title.value = ''
   description.value = ''
@@ -22,12 +31,33 @@ const onSubmit = () => {
 </script>
 
 <style scoped>
-.create-task-form {
-  display: flex;
-  gap: 8px;
+.create-task {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
   margin-bottom: 16px;
 }
-.create-task-form .input {
-  flex: 1;
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: -8px;
 }
+.desc-input {
+  flex: 1;
+  padding: 9px 14px;
+  background: var(--bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--transition);
+}
+.desc-input:focus {
+  border-color: var(--blue);
+  background: white;
+}
+.desc-input::placeholder { color: var(--text-muted); }
 </style>

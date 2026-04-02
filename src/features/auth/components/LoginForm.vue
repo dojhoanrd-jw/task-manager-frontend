@@ -1,22 +1,25 @@
 <template>
   <div class="auth-page">
-    <div class="card auth-card">
-      <h2>Login</h2>
+    <div class="auth-card fade-enter">
+      <div class="auth-brand">
+        <div class="brand-icon">T</div>
+        <h1>Task Manager</h1>
+        <p>Sign in to manage your projects</p>
+      </div>
+
+      <ErrorAlert />
+
       <form @submit.prevent="onSubmit">
-        <div class="form-group">
-          <label>Email</label>
-          <input v-model="email" type="email" class="input" placeholder="your@email.com" required />
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input v-model="password" type="password" class="input" placeholder="Min 8 characters" required />
-        </div>
-        <button type="submit" class="btn btn-primary" :disabled="loading" style="width:100%">
-          {{ loading ? 'Loading...' : 'Login' }}
-        </button>
+        <BaseInput v-model="email" label="Email" type="email" placeholder="you@example.com" required />
+        <BaseInput v-model="password" label="Password" type="password" placeholder="Min 8 characters" required :minlength="8" />
+        <BaseButton variant="primary" block :loading="loading" @click="onSubmit">
+          Sign In
+        </BaseButton>
       </form>
-      <p class="auth-link">
-        Don't have an account? <router-link to="/register">Register</router-link>
+
+      <p class="auth-footer">
+        Don't have an account?
+        <router-link to="/register">Create one</router-link>
       </p>
     </div>
   </div>
@@ -26,6 +29,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth.store'
+import BaseInput from '@/shared/components/BaseInput.vue'
+import BaseButton from '@/shared/components/BaseButton.vue'
+import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -48,23 +54,52 @@ const onSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24px;
 }
 .auth-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
-.auth-card h2 {
-  margin-bottom: 24px;
+.auth-brand {
   text-align: center;
+  margin-bottom: 32px;
 }
-.auth-link {
-  text-align: center;
-  margin-top: 16px;
+.brand-icon {
+  width: 48px; height: 48px;
+  background: var(--blue);
+  color: white;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 auto 16px;
+}
+.auth-brand h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.auth-brand p {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
-.auth-link a {
-  color: #3b82f6;
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.auth-footer a {
+  color: var(--blue);
   text-decoration: none;
+  font-weight: 500;
 }
+.auth-footer a:hover { text-decoration: underline; }
 </style>

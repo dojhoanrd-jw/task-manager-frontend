@@ -1,123 +1,140 @@
 <template>
-  <div class="project-selector">
-    <div class="project-header">
-      <h3>Projects</h3>
-      <button @click="showForm = !showForm" class="btn btn-primary btn-sm">
-        {{ showForm ? 'Cancel' : '+ New' }}
-      </button>
+  <div class="projects-section">
+    <div class="section-header">
+      <h3>Your Projects</h3>
+      <BaseButton variant="outline" size="sm" @click="showModal = true">+ New Project</BaseButton>
     </div>
 
-    <!-- Create project form -->
-    <form v-if="showForm" @submit.prevent="onCreateProject" class="project-form">
-      <input v-model="newName" class="input" placeholder="Project name" required />
-      <input v-model="newDesc" class="input" placeholder="Description (optional)" />
-      <button type="submit" class="btn btn-success btn-sm">Create</button>
-    </form>
+    <LoadingSpinner v-if="projectsStore.loading" text="Loading projects..." />
 
-    <LoadingSpinner v-if="projectsStore.loading" />
-
-    <!-- Project list -->
-    <div v-else class="project-list">
+    <div v-else class="project-grid">
       <div
         v-for="project in projectsStore.projects"
         :key="project.id"
-        class="project-item"
+        class="project-card fade-enter"
         :class="{ active: projectsStore.currentProject?.id === project.id }"
-        @click="onSelect(project)"
+        @click="projectsStore.selectProject(project)"
       >
-        <span class="project-name">{{ project.name }}</span>
-        <span class="project-desc">{{ project.description }}</span>
+        <div class="project-icon">{{ project.name.charAt(0).toUpperCase() }}</div>
+        <div class="project-info">
+          <span class="project-name">{{ project.name }}</span>
+          <span class="project-desc">{{ project.description || 'No description' }}</span>
+        </div>
       </div>
-      <p v-if="projectsStore.projects.length === 0" class="empty-text">
-        No projects yet. Create one to get started.
-      </p>
+
+      <div v-if="projectsStore.projects.length === 0" class="empty-state">
+        <p>No projects yet</p>
+        <BaseButton variant="primary" size="sm" @click="showModal = true">Create your first project</BaseButton>
+      </div>
     </div>
+
+    <!-- Create Project Modal -->
+    <BaseModal :visible="showModal" title="New Project" @close="showModal = false">
+      <form @submit.prevent="onCreateProject">
+        <BaseInput v-model="newName" label="Project Name" placeholder="My Project" required />
+        <BaseInput v-model="newDesc" label="Description" placeholder="Optional description" />
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px">
+          <BaseButton variant="ghost" @click="showModal = false">Cancel</BaseButton>
+          <BaseButton variant="primary" :loading="creating" @click="onCreateProject">Create</BaseButton>
+        </div>
+      </form>
+    </BaseModal>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useProjectsStore } from '../store/projects.store'
+import BaseButton from '@/shared/components/BaseButton.vue'
+import BaseInput from '@/shared/components/BaseInput.vue'
+import BaseModal from '@/shared/components/BaseModal.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
 const projectsStore = useProjectsStore()
 
-const showForm = ref(false)
+const showModal = ref(false)
 const newName = ref('')
 const newDesc = ref('')
+const creating = ref(false)
 
-onMounted(() => {
-  projectsStore.fetchProjects()
-})
-
-const onSelect = (project) => {
-  projectsStore.selectProject(project)
-}
+onMounted(() => { projectsStore.fetchProjects() })
 
 const onCreateProject = async () => {
+  if (!newName.value.trim()) return
+  creating.value = true
   const project = await projectsStore.createProject(newName.value, newDesc.value)
+  creating.value = false
   if (project) {
     projectsStore.selectProject(project)
     newName.value = ''
     newDesc.value = ''
-    showForm.value = false
+    showModal.value = false
   }
 }
 </script>
 
 <style scoped>
-.project-selector {
-  margin-bottom: 24px;
-}
-.project-header {
+.projects-section { margin-bottom: 28px; }
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
-.project-form {
+.section-header h3 { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.project-card {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.project-form .input {
-  flex: 1;
-}
-.project-list {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.project-item {
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
   background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s;
-  flex: 1;
-  min-width: 180px;
+  transition: all var(--transition);
 }
-.project-item:hover {
-  border-color: #3b82f6;
+.project-card:hover { border-color: var(--blue); box-shadow: var(--shadow-sm); }
+.project-card.active { border-color: var(--blue); background: var(--bg-accent); }
+.project-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
 }
-.project-item.active {
-  border-color: #3b82f6;
-  background: #eff6ff;
-}
+.project-info { min-width: 0; }
 .project-name {
   display: block;
   font-weight: 600;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .project-desc {
   display: block;
   font-size: 12px;
-  color: #6b7280;
-  margin-top: 4px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.empty-text {
-  color: #9ca3af;
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 32px;
+  color: var(--text-muted);
   font-size: 14px;
 }
+.empty-state p { margin-bottom: 12px; }
 </style>
