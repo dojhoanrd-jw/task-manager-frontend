@@ -77,10 +77,20 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   }
 
+  const getTaskById = async (projectId, taskId) => {
+    try {
+      const { data } = await httpClient.get(`/projects/${projectId}/tasks/${taskId}`)
+      return data
+    } catch (error) {
+      handleError(error)
+      return null
+    }
+  }
+
   const clearTasks = () => {
     tasks.value = []
     hasMore.value = true
   }
 
-  return { tasks, loading, loadingMore, hasMore, fetchTasks, loadMore, createTask, toggleComplete, deleteTask, clearTasks }
+  return { tasks, loading, loadingMore, hasMore, fetchTasks, loadMore, createTask, toggleComplete, deleteTask, getTaskById, clearTasks }
 })

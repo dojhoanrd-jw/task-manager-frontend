@@ -6,8 +6,8 @@
       </svg>
     </button>
 
-    <div class="task-body">
-      <span class="task-title" :class="{ strikethrough: task.completed }">{{ task.title }}</span>
+    <div class="task-body" @click="onViewDetail">
+      <span class="task-title clickable" :class="{ strikethrough: task.completed }">{{ task.title }}</span>
       <span v-if="task.description" class="task-desc">{{ task.description }}</span>
       <div class="task-meta">
         <BaseBadge variant="default">{{ task.id.slice(0, 8) }}</BaseBadge>
@@ -25,10 +25,17 @@
 </template>
 
 <script setup>
+import { inject } from 'vue'
 import BaseBadge from '@/shared/components/BaseBadge.vue'
 
-defineProps({ task: { type: Object, required: true } })
+const props = defineProps({ task: { type: Object, required: true } })
 defineEmits(['toggle', 'delete'])
+
+const openTaskDetail = inject('openTaskDetail', null)
+
+const onViewDetail = () => {
+  if (openTaskDetail) openTaskDetail(props.task)
+}
 </script>
 
 <style scoped>
@@ -65,7 +72,8 @@ defineEmits(['toggle', 'delete'])
 }
 .task-checkbox svg { width: 12px; height: 12px; }
 
-.task-body { flex: 1; min-width: 0; }
+.task-body { flex: 1; min-width: 0; cursor: pointer; }
+.clickable:hover { color: var(--blue); }
 .task-title {
   display: block;
   font-weight: 500;

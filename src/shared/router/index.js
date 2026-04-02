@@ -20,6 +20,24 @@ const routes = [
     component: () => import('@/views/DashboardView.vue'),
     meta: { auth: true },
   },
+  {
+    path: '/projects',
+    name: 'Projects',
+    component: () => import('@/views/ProjectsView.vue'),
+    meta: { auth: true },
+  },
+  {
+    path: '/projects/:projectId',
+    name: 'ProjectDetail',
+    component: () => import('@/views/ProjectDetailView.vue'),
+    meta: { auth: true },
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/AdminView.vue'),
+    meta: { auth: true },
+  },
 ]
 
 const router = createRouter({
@@ -27,7 +45,6 @@ const router = createRouter({
   routes,
 })
 
-// Navigation guards
 router.beforeEach((to) => {
   const authStore = useAuthStore()
 
