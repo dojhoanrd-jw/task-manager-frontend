@@ -1,6 +1,6 @@
 <template>
   <AppLayout :pageTitle="project?.name || 'Project'">
-    <LoadingSpinner v-if="loading" text="Loading project..." />
+    <LoadingSpinner v-if="loading" :text="$t('common.loading')" />
 
     <template v-if="project && !loading">
       <!-- Project info -->
@@ -9,12 +9,12 @@
           <div class="detail-icon">{{ project.name.charAt(0).toUpperCase() }}</div>
           <div>
             <h2>{{ project.name }}</h2>
-            <p class="detail-desc">{{ project.description || 'No description' }}</p>
+            <p class="detail-desc">{{ project.description || $t('tasks.noDescription') }}</p>
           </div>
         </div>
         <div class="detail-meta">
-          <BaseBadge variant="blue">Owner: {{ project.ownerId?.slice(0, 8) }}</BaseBadge>
-          <BaseBadge variant="green">{{ project.members?.length || 0 }} members</BaseBadge>
+          <BaseBadge variant="blue">{{ $t('projects.owner') }}: {{ project.ownerId?.slice(0, 8) }}</BaseBadge>
+          <BaseBadge variant="green">{{ project.members?.length || 0 }} {{ $t('projects.members') }}</BaseBadge>
           <span class="detail-id">ID: {{ project.id }}</span>
         </div>
       </div>
@@ -22,8 +22,8 @@
       <!-- Members section -->
       <div class="section fade-enter">
         <div class="section-top">
-          <h3>Members</h3>
-          <BaseButton variant="outline" size="sm" @click="showAddMember = true">+ Add Member</BaseButton>
+          <h3>{{ $t('members.title') }}</h3>
+          <BaseButton variant="outline" size="sm" @click="showAddMember = true">{{ $t('members.addMember') }}</BaseButton>
         </div>
 
         <div class="members-list">
@@ -36,57 +36,57 @@
               size="sm"
               @click="onRemoveMember(memberId)"
             >
-              Remove
+              {{ $t('members.remove') }}
             </BaseButton>
-            <BaseBadge v-else variant="yellow">Owner</BaseBadge>
+            <BaseBadge v-else variant="yellow">{{ $t('projects.owner') }}</BaseBadge>
           </div>
         </div>
       </div>
 
       <!-- Tasks section -->
       <div class="section fade-enter">
-        <h3>Tasks</h3>
+        <h3>{{ $t('tasks.title') }}</h3>
         <TaskList />
       </div>
 
       <!-- Add Member Modal -->
-      <BaseModal :visible="showAddMember" title="Add Member" @close="showAddMember = false">
+      <BaseModal :visible="showAddMember" :title="$t('members.addMemberTitle')" @close="showAddMember = false">
         <form @submit.prevent="onAddMember">
-          <BaseInput v-model="memberUserId" label="User ID" placeholder="Paste the user ID" required />
+          <BaseInput v-model="memberUserId" :label="$t('members.userId')" :placeholder="$t('members.userIdPlaceholder')" required />
           <div class="modal-actions">
-            <BaseButton variant="ghost" @click="showAddMember = false">Cancel</BaseButton>
-            <BaseButton variant="primary" :loading="saving" @click="onAddMember">Add</BaseButton>
+            <BaseButton variant="ghost" @click="showAddMember = false">{{ $t('common.cancel') }}</BaseButton>
+            <BaseButton variant="primary" :loading="saving" @click="onAddMember">{{ $t('common.add') }}</BaseButton>
           </div>
         </form>
       </BaseModal>
 
       <!-- Task Detail Modal -->
-      <BaseModal :visible="showTaskDetail" title="Task Detail" @close="showTaskDetail = false">
+      <BaseModal :visible="showTaskDetail" :title="$t('tasks.taskDetail')" @close="showTaskDetail = false">
         <template v-if="taskDetail">
           <div class="task-detail-field">
             <label>ID</label>
             <span class="mono">{{ taskDetail.id }}</span>
           </div>
           <div class="task-detail-field">
-            <label>Title</label>
+            <label>{{ $t('projects.name') }}</label>
             <span>{{ taskDetail.title }}</span>
           </div>
           <div class="task-detail-field">
-            <label>Description</label>
-            <span>{{ taskDetail.description || 'No description' }}</span>
+            <label>{{ $t('projects.description') }}</label>
+            <span>{{ taskDetail.description || $t('tasks.noDescription') }}</span>
           </div>
           <div class="task-detail-field">
-            <label>Status</label>
+            <label>{{ $t('tasks.status') }}</label>
             <BaseBadge :variant="taskDetail.completed ? 'green' : 'blue'">
-              {{ taskDetail.completed ? 'Completed' : 'Pending' }}
+              {{ taskDetail.completed ? $t('tasks.completedStatus') : $t('tasks.pending') }}
             </BaseBadge>
           </div>
           <div class="task-detail-field">
-            <label>Created</label>
-            <span>{{ taskDetail.createdDate }} at {{ taskDetail.createdTime }}</span>
+            <label>{{ $t('tasks.created') }}</label>
+            <span>{{ taskDetail.createdDate }} {{ $t('common.at') }} {{ taskDetail.createdTime }}</span>
           </div>
           <div class="task-detail-field">
-            <label>Project</label>
+            <label>{{ $t('tasks.project') }}</label>
             <span class="mono">{{ taskDetail.projectId }}</span>
           </div>
         </template>

@@ -6,8 +6,10 @@
       class="lang-btn"
       :class="{ active: currentLocale === lang.code }"
       @click="changeLanguage(lang.code)"
+      :title="lang.label"
     >
-      {{ lang.flag }}
+      <span class="lang-flag">{{ lang.flag }}</span>
+      <span class="lang-code">{{ lang.code.toUpperCase() }}</span>
     </button>
   </div>
 </template>
@@ -19,8 +21,8 @@ import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
 
 const languages = [
-  { code: 'es', flag: 'ES' },
-  { code: 'en', flag: 'EN' },
+  { code: 'es', flag: '🇪🇸', label: 'Español' },
+  { code: 'en', flag: '🇺🇸', label: 'English' },
 ]
 
 const currentLocale = computed(() => locale.value)
@@ -34,29 +36,33 @@ const changeLanguage = (code) => {
 <style scoped>
 .lang-selector {
   display: flex;
-  gap: 4px;
-  background: rgba(255,255,255,0.08);
-  border-radius: var(--radius-sm);
-  padding: 3px;
+  gap: 6px;
+  padding: 12px 16px;
 }
 .lang-btn {
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-family: inherit;
-  border: none;
-  border-radius: 4px;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   background: transparent;
   color: rgba(255,255,255,0.5);
   transition: all var(--transition);
-  letter-spacing: 0.03em;
 }
 .lang-btn.active {
-  background: var(--blue);
+  background: rgba(59,130,246,0.2);
+  border-color: rgba(59,130,246,0.4);
   color: white;
 }
 .lang-btn:hover:not(.active) {
-  color: white;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.8);
 }
+.lang-flag { font-size: 14px; }
+.lang-code { letter-spacing: 0.03em; }
 </style>

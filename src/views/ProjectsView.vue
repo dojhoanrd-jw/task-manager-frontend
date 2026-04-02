@@ -1,11 +1,11 @@
 <template>
-  <AppLayout pageTitle="Projects">
+  <AppLayout :pageTitle="$t('projects.title')">
     <div class="projects-top">
-      <p class="projects-count">{{ projectsStore.projects.length }} projects</p>
-      <BaseButton variant="primary" size="sm" @click="showCreate = true">+ New Project</BaseButton>
+      <p class="projects-count">{{ projectsStore.projects.length }} {{ $t('nav.projects').toLowerCase() }}</p>
+      <BaseButton variant="primary" size="sm" @click="showCreate = true">{{ $t('projects.newProject') }}</BaseButton>
     </div>
 
-    <LoadingSpinner v-if="projectsStore.loading" text="Loading projects..." />
+    <LoadingSpinner v-if="projectsStore.loading" :text="$t('common.loading')" />
 
     <div v-else class="projects-grid">
       <div v-for="project in projectsStore.projects" :key="project.id" class="project-card fade-enter">
@@ -13,57 +13,57 @@
           <div class="project-icon">{{ project.name.charAt(0).toUpperCase() }}</div>
           <div class="project-info">
             <h3>{{ project.name }}</h3>
-            <p>{{ project.description || 'No description' }}</p>
+            <p>{{ project.description || $t('tasks.noDescription') }}</p>
           </div>
         </div>
         <div class="project-meta">
-          <BaseBadge variant="blue">{{ project.members?.length || 0 }} members</BaseBadge>
+          <BaseBadge variant="blue">{{ project.members?.length || 0 }} {{ $t('projects.members') }}</BaseBadge>
           <span class="project-id">{{ project.id.slice(0, 8) }}</span>
         </div>
         <div class="project-actions">
           <BaseButton variant="outline" size="sm" @click="$router.push(`/projects/${project.id}`)">
-            Open
+            {{ $t('projects.open') }}
           </BaseButton>
-          <BaseButton variant="ghost" size="sm" @click="openEdit(project)">Edit</BaseButton>
-          <BaseButton variant="ghost" size="sm" @click="confirmDelete(project)">Delete</BaseButton>
+          <BaseButton variant="ghost" size="sm" @click="openEdit(project)">{{ $t('projects.edit') }}</BaseButton>
+          <BaseButton variant="ghost" size="sm" @click="confirmDelete(project)">{{ $t('projects.delete') }}</BaseButton>
         </div>
       </div>
     </div>
 
     <div v-if="!projectsStore.loading && projectsStore.projects.length === 0" class="empty fade-enter">
-      <p>No projects yet. Create your first one.</p>
+      <p>{{ $t('projects.noProjects') }}. {{ $t('projects.createFirst') }}.</p>
     </div>
 
     <!-- Create Modal -->
-    <BaseModal :visible="showCreate" title="New Project" @close="showCreate = false">
+    <BaseModal :visible="showCreate" :title="$t('projects.newProject')" @close="showCreate = false">
       <form @submit.prevent="onCreate">
-        <BaseInput v-model="createName" label="Name" placeholder="My Project" required />
-        <BaseInput v-model="createDesc" label="Description" placeholder="Optional" />
+        <BaseInput v-model="createName" :label="$t('projects.name')" placeholder="My Project" required />
+        <BaseInput v-model="createDesc" :label="$t('projects.description')" :placeholder="$t('projects.descriptionOptional')" />
         <div class="modal-actions">
-          <BaseButton variant="ghost" @click="showCreate = false">Cancel</BaseButton>
-          <BaseButton variant="primary" :loading="saving" @click="onCreate">Create</BaseButton>
+          <BaseButton variant="ghost" @click="showCreate = false">{{ $t('projects.cancel') }}</BaseButton>
+          <BaseButton variant="primary" :loading="saving" @click="onCreate">{{ $t('projects.create') }}</BaseButton>
         </div>
       </form>
     </BaseModal>
 
     <!-- Edit Modal -->
-    <BaseModal :visible="showEdit" title="Edit Project" @close="showEdit = false">
+    <BaseModal :visible="showEdit" :title="$t('projects.editProject')" @close="showEdit = false">
       <form @submit.prevent="onEdit">
-        <BaseInput v-model="editName" label="Name" required />
-        <BaseInput v-model="editDesc" label="Description" />
+        <BaseInput v-model="editName" :label="$t('projects.name')" required />
+        <BaseInput v-model="editDesc" :label="$t('projects.description')" />
         <div class="modal-actions">
-          <BaseButton variant="ghost" @click="showEdit = false">Cancel</BaseButton>
-          <BaseButton variant="primary" :loading="saving" @click="onEdit">Save</BaseButton>
+          <BaseButton variant="ghost" @click="showEdit = false">{{ $t('projects.cancel') }}</BaseButton>
+          <BaseButton variant="primary" :loading="saving" @click="onEdit">{{ $t('projects.save') }}</BaseButton>
         </div>
       </form>
     </BaseModal>
 
     <!-- Delete Confirm Modal -->
-    <BaseModal :visible="showDeleteConfirm" title="Delete Project" @close="showDeleteConfirm = false">
-      <p class="confirm-text">Are you sure you want to delete <strong>{{ deleteTarget?.name }}</strong>? This action cannot be undone.</p>
+    <BaseModal :visible="showDeleteConfirm" :title="$t('projects.deleteProject')" @close="showDeleteConfirm = false">
+      <p class="confirm-text">{{ $t('projects.deleteConfirm') }} <strong>{{ deleteTarget?.name }}</strong>? {{ $t('projects.deleteWarning') }}</p>
       <div class="modal-actions">
-        <BaseButton variant="ghost" @click="showDeleteConfirm = false">Cancel</BaseButton>
-        <BaseButton variant="danger" :loading="saving" @click="onDelete">Delete</BaseButton>
+        <BaseButton variant="ghost" @click="showDeleteConfirm = false">{{ $t('projects.cancel') }}</BaseButton>
+        <BaseButton variant="danger" :loading="saving" @click="onDelete">{{ $t('projects.delete') }}</BaseButton>
       </div>
     </BaseModal>
   </AppLayout>

@@ -1,8 +1,8 @@
 <template>
   <div class="auth-page">
     <div class="auth-lang">
-      <button :class="{ active: locale === 'es' }" @click="setLang('es')">ES</button>
-      <button :class="{ active: locale === 'en' }" @click="setLang('en')">EN</button>
+      <button :class="{ active: locale === 'es' }" @click="setLang('es')">🇪🇸 ES</button>
+      <button :class="{ active: locale === 'en' }" @click="setLang('en')">🇺🇸 EN</button>
     </div>
     <div class="auth-card fade-enter">
       <div class="auth-brand">
