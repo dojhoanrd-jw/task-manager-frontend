@@ -2,12 +2,12 @@
   <div>
     <CreateTaskForm @create="onCreateTask" />
 
-    <LoadingSpinner v-if="tasksStore.loading" text="Loading tasks..." />
+    <LoadingSpinner v-if="tasksStore.loading" :text="$t('common.loading')" />
 
     <template v-else>
       <div v-if="tasksStore.tasks.length > 0" class="task-stats">
-        <span>{{ tasksStore.tasks.length }} tasks</span>
-        <span>{{ completedCount }} completed</span>
+        <span>{{ tasksStore.tasks.length }} {{ $t('tasks.tasks') }}</span>
+        <span>{{ completedCount }} {{ $t('tasks.completed') }}</span>
       </div>
 
       <div ref="scrollContainer" class="task-list" @scroll="onScroll">
@@ -22,14 +22,14 @@
         <LoadingSpinner v-if="tasksStore.loadingMore" />
 
         <div v-if="!tasksStore.hasMore && tasksStore.tasks.length > 0" class="end-message">
-          All tasks loaded
+          {{ $t('tasks.allLoaded') }}
         </div>
       </div>
 
       <div v-if="tasksStore.tasks.length === 0" class="empty-tasks">
         <div class="empty-icon">&#10003;</div>
-        <p>No tasks yet</p>
-        <span>Create your first task above</span>
+        <p>{{ $t('tasks.noTasks') }}</p>
+        <span>{{ $t('tasks.createFirst') }}</span>
       </div>
     </template>
   </div>

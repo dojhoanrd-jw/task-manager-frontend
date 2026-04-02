@@ -1,11 +1,11 @@
 <template>
   <div class="projects-section">
     <div class="section-header">
-      <h3>Your Projects</h3>
-      <BaseButton variant="outline" size="sm" @click="showModal = true">+ New Project</BaseButton>
+      <h3>{{ $t('projects.yourProjects') }}</h3>
+      <BaseButton variant="outline" size="sm" @click="showModal = true">{{ $t('projects.newProject') }}</BaseButton>
     </div>
 
-    <LoadingSpinner v-if="projectsStore.loading" text="Loading projects..." />
+    <LoadingSpinner v-if="projectsStore.loading" :text="$t('common.loading')" />
 
     <div v-else class="project-grid">
       <div
@@ -23,19 +23,19 @@
       </div>
 
       <div v-if="projectsStore.projects.length === 0" class="empty-state">
-        <p>No projects yet</p>
-        <BaseButton variant="primary" size="sm" @click="showModal = true">Create your first project</BaseButton>
+        <p>{{ $t('projects.noProjects') }}</p>
+        <BaseButton variant="primary" size="sm" @click="showModal = true">{{ $t('projects.createFirst') }}</BaseButton>
       </div>
     </div>
 
     <!-- Create Project Modal -->
-    <BaseModal :visible="showModal" title="New Project" @close="showModal = false">
+    <BaseModal :visible="showModal" :title="$t('projects.newProject')" @close="showModal = false">
       <form @submit.prevent="onCreateProject">
-        <BaseInput v-model="newName" label="Project Name" placeholder="My Project" required />
-        <BaseInput v-model="newDesc" label="Description" placeholder="Optional description" />
+        <BaseInput v-model="newName" :label="$t('projects.name')" placeholder="My Project" required />
+        <BaseInput v-model="newDesc" :label="$t('projects.description')" :placeholder="$t('projects.descriptionOptional')" />
         <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px">
-          <BaseButton variant="ghost" @click="showModal = false">Cancel</BaseButton>
-          <BaseButton variant="primary" :loading="creating" @click="onCreateProject">Create</BaseButton>
+          <BaseButton variant="ghost" @click="showModal = false">{{ $t('projects.cancel') }}</BaseButton>
+          <BaseButton variant="primary" :loading="creating" @click="onCreateProject">{{ $t('projects.create') }}</BaseButton>
         </div>
       </form>
     </BaseModal>

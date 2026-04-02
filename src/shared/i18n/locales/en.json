@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "Task Manager"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "users": "Users"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "signOut": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "createOne": "Create one",
+    "signInLink": "Sign in",
+    "signInSubtitle": "Sign in to manage your projects",
+    "registerSubtitle": "Get started with Task Manager",
+    "minPassword": "Min 8 characters",
+    "emailPlaceholder": "you{'@'}example.com",
+    "namePlaceholder": "John Doe"
+  },
+  "projects": {
+    "title": "Projects",
+    "yourProjects": "Your Projects",
+    "newProject": "+ New Project",
+    "createFirst": "Create your first project",
+    "noProjects": "No projects yet",
+    "name": "Project Name",
+    "description": "Description",
+    "descriptionOptional": "Description (optional)",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "open": "Open",
+    "save": "Save",
+    "cancel": "Cancel",
+    "members": "members",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project",
+    "deleteConfirm": "Are you sure you want to delete",
+    "deleteWarning": "This action cannot be undone.",
+    "viewDetails": "View project details",
+    "selectProject": "Select a project or create a new one to start managing your tasks.",
+    "owner": "Owner"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "addTask": "Add Task",
+    "whatToDo": "What needs to be done?",
+    "addDescription": "Add a description (optional)",
+    "noTasks": "No tasks yet",
+    "createFirst": "Create your first task above",
+    "allLoaded": "All tasks loaded",
+    "tasks": "tasks",
+    "completed": "completed",
+    "deleteTask": "Delete task",
+    "taskDetail": "Task Detail",
+    "status": "Status",
+    "pending": "Pending",
+    "completedStatus": "Completed",
+    "created": "Created",
+    "project": "Project",
+    "noDescription": "No description",
+    "manage": "Manage your tasks"
+  },
+  "members": {
+    "title": "Members",
+    "addMember": "+ Add Member",
+    "addMemberTitle": "Add Member",
+    "userId": "User ID",
+    "userIdPlaceholder": "Paste the user ID",
+    "add": "Add",
+    "remove": "Remove"
+  },
+  "admin": {
+    "title": "User Management",
+    "registeredUsers": "registered users",
+    "user": "User",
+    "email": "Email",
+    "role": "Role",
+    "actions": "Actions",
+    "changeRole": "Change Role",
+    "changeRoleTitle": "Change User Role",
+    "changingFor": "Changing role for",
+    "noUsers": "No users found.",
+    "roles": {
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    },
+    "roleDesc": {
+      "admin": "Full access to all features",
+      "member": "Can manage tasks and projects",
+      "viewer": "Read-only access"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "add": "Add",
+    "welcome": "Welcome to Task Manager",
+    "at": "at"
+  }
+}

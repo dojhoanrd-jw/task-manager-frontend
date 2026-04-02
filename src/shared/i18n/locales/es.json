@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "Task Manager"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "projects": "Proyectos",
+    "users": "Usuarios"
+  },
+  "auth": {
+    "login": "Iniciar Sesion",
+    "register": "Crear Cuenta",
+    "signIn": "Ingresar",
+    "createAccount": "Crear Cuenta",
+    "signOut": "Cerrar Sesion",
+    "email": "Correo electronico",
+    "password": "Contrasena",
+    "name": "Nombre completo",
+    "noAccount": "No tienes una cuenta?",
+    "hasAccount": "Ya tienes una cuenta?",
+    "createOne": "Crear una",
+    "signInLink": "Inicia sesion",
+    "signInSubtitle": "Inicia sesion para gestionar tus proyectos",
+    "registerSubtitle": "Comienza con Task Manager",
+    "minPassword": "Min 8 caracteres",
+    "emailPlaceholder": "tu{'@'}correo.com",
+    "namePlaceholder": "Juan Perez"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "yourProjects": "Tus Proyectos",
+    "newProject": "+ Nuevo Proyecto",
+    "createFirst": "Crea tu primer proyecto",
+    "noProjects": "No hay proyectos aun",
+    "name": "Nombre del proyecto",
+    "description": "Descripcion",
+    "descriptionOptional": "Descripcion (opcional)",
+    "create": "Crear",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "open": "Abrir",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "members": "miembros",
+    "editProject": "Editar Proyecto",
+    "deleteProject": "Eliminar Proyecto",
+    "deleteConfirm": "Estas seguro de eliminar",
+    "deleteWarning": "Esta accion no se puede deshacer.",
+    "viewDetails": "Ver detalles del proyecto",
+    "selectProject": "Selecciona o crea un proyecto para gestionar tus tareas.",
+    "owner": "Propietario"
+  },
+  "tasks": {
+    "title": "Tareas",
+    "addTask": "Agregar Tarea",
+    "whatToDo": "Que necesitas hacer?",
+    "addDescription": "Agregar descripcion (opcional)",
+    "noTasks": "No hay tareas aun",
+    "createFirst": "Crea tu primera tarea arriba",
+    "allLoaded": "Todas las tareas cargadas",
+    "tasks": "tareas",
+    "completed": "completadas",
+    "deleteTask": "Eliminar tarea",
+    "taskDetail": "Detalle de Tarea",
+    "status": "Estado",
+    "pending": "Pendiente",
+    "completedStatus": "Completada",
+    "created": "Creado",
+    "project": "Proyecto",
+    "noDescription": "Sin descripcion",
+    "manage": "Gestiona tus tareas"
+  },
+  "members": {
+    "title": "Miembros",
+    "addMember": "+ Agregar Miembro",
+    "addMemberTitle": "Agregar Miembro",
+    "userId": "ID del Usuario",
+    "userIdPlaceholder": "Pega el ID del usuario",
+    "add": "Agregar",
+    "remove": "Remover"
+  },
+  "admin": {
+    "title": "Gestion de Usuarios",
+    "registeredUsers": "usuarios registrados",
+    "user": "Usuario",
+    "email": "Correo",
+    "role": "Rol",
+    "actions": "Acciones",
+    "changeRole": "Cambiar Rol",
+    "changeRoleTitle": "Cambiar Rol de Usuario",
+    "changingFor": "Cambiando rol para",
+    "noUsers": "No se encontraron usuarios.",
+    "roles": {
+      "admin": "Administrador",
+      "member": "Miembro",
+      "viewer": "Lector"
+    },
+    "roleDesc": {
+      "admin": "Acceso completo a todas las funciones",
+      "member": "Puede gestionar tareas y proyectos",
+      "viewer": "Acceso de solo lectura"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "add": "Agregar",
+    "welcome": "Bienvenido a Task Manager",
+    "at": "a las"
+  }
+}

@@ -8,23 +8,25 @@
       <div class="sidebar-header">
         <div class="brand">
           <div class="brand-icon">T</div>
-          <span class="brand-text">Task Manager</span>
+          <span class="brand-text">{{ $t('app.name') }}</span>
         </div>
         <button class="close-sidebar" @click="sidebarOpen = false">&times;</button>
       </div>
 
+      <LanguageSelector />
+
       <nav class="sidebar-nav">
         <router-link to="/" class="nav-item" @click="sidebarOpen = false">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
-          Dashboard
+          {{ $t('nav.dashboard') }}
         </router-link>
         <router-link to="/projects" class="nav-item" @click="sidebarOpen = false">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
-          Projects
+          {{ $t('nav.projects') }}
         </router-link>
         <router-link v-if="authStore.user?.role === 'admin'" to="/admin" class="nav-item" @click="sidebarOpen = false">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
-          Users
+          {{ $t('nav.users') }}
         </router-link>
       </nav>
 
@@ -36,7 +38,7 @@
             <span class="user-role">{{ authStore.user?.role }}</span>
           </div>
         </div>
-        <button class="logout-btn" @click="onLogout">Sign out</button>
+        <button class="logout-btn" @click="onLogout">{{ $t('auth.signOut') }}</button>
       </div>
     </aside>
 
@@ -64,6 +66,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/features/auth/store/auth.store'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
+import LanguageSelector from '@/shared/components/LanguageSelector.vue'
 
 defineProps({ pageTitle: { type: String, default: '' } })
 

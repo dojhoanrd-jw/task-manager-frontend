@@ -1,15 +1,15 @@
 <template>
-  <AppLayout pageTitle="Dashboard">
+  <AppLayout :pageTitle="$t('nav.dashboard')">
     <ProjectSelector />
 
     <div v-if="projectsStore.currentProject" class="tasks-section fade-enter">
       <div class="section-header">
         <div>
           <h2>{{ projectsStore.currentProject.name }}</h2>
-          <p class="subtitle">{{ projectsStore.currentProject.description || 'Manage your tasks' }}</p>
+          <p class="subtitle">{{ projectsStore.currentProject.description || $t('tasks.manage') }}</p>
         </div>
         <router-link :to="`/projects/${projectsStore.currentProject.id}`" class="detail-link">
-          View project details &rarr;
+          {{ $t('projects.viewDetails') }} &rarr;
         </router-link>
       </div>
       <TaskList />
@@ -17,8 +17,8 @@
 
     <div v-else class="welcome-state fade-enter">
       <div class="welcome-icon">&#128640;</div>
-      <h2>Welcome to Task Manager</h2>
-      <p>Select a project or create a new one to start managing your tasks.</p>
+      <h2>{{ $t('common.welcome') }}</h2>
+      <p>{{ $t('projects.selectProject') }}</p>
     </div>
   </AppLayout>
 </template>

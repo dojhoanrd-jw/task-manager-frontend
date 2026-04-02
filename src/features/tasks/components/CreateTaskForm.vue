@@ -1,11 +1,11 @@
 <template>
   <div class="create-task">
     <form @submit.prevent="onSubmit" class="create-task-form">
-      <BaseInput v-model="title" placeholder="What needs to be done?" required />
+      <BaseInput v-model="title" :placeholder="$t('tasks.whatToDo')" required />
       <div class="form-actions">
-        <input v-model="description" class="desc-input" placeholder="Add a description (optional)" />
+        <input v-model="description" class="desc-input" :placeholder="$t('tasks.addDescription')" />
         <BaseButton variant="primary" size="sm" :disabled="!title.trim()" @click="onSubmit">
-          Add Task
+          {{ $t('tasks.addTask') }}
         </BaseButton>
       </div>
     </form>
